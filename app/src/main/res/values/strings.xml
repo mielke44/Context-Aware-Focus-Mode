@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FocusMode</string>
+
+    <string name="notif_channel_name">Focus Mode Alerts</string>
+    <string name="notif_channel_description">A channel to notify ambience distractions</string>
+    <string name="notif_ongoing_fgs">Focus Mode Active</string>
+    <string name="notif_ongoing_body">Monitoring distractions</string>
+    <string name="notif_distraction_title">Your focus is being disturbed!</string>
+    <string name="notif_movement_distraction">A sound distraction was detected</string>
+    <string name="notif_sound_distraction">A movement distraction was detected</string>
+    <string name="icon_description">Return to focus session</string>
+    <string name="history_label">History</string>
+</resources>
