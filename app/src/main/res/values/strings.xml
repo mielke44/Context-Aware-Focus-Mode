@@ -9,5 +9,15 @@
     <string name="notif_movement_distraction">A sound distraction was detected</string>
     <string name="notif_sound_distraction">A movement distraction was detected</string>
     <string name="icon_description">Return to focus session</string>
+    <string name="permission_message">In order to use focus mode, you must approve the permissions</string>
+    <string name="ellapsed_label">Time ellapsed</string>
+    <string name="focus_session_label">Focus Session</string>
     <string name="history_label">History</string>
+    <string name="session_history_label">Session History</string>
+    <string name="stop_session_label">Stop Session</string>
+    <string name="start_session_label">Start Session</string>
+    <string name="sound_label">Sound</string>
+    <string name="movement_label">Movement</string>
+    <string name="setup_label">settings</string>
+    <string name="clear_history_label">Clear session history</string>
 </resources>

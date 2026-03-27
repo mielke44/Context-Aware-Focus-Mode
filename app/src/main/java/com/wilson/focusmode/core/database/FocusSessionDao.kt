@@ -17,4 +17,7 @@ interface FocusSessionDao {
 
     @Query("SELECT * FROM focus_sessions WHERE id = :sessionId")
     suspend fun getSessionById(sessionId: Long): FocusSessionEntity?
+
+    @Query("DELETE FROM focus_sessions")
+    suspend fun flushDatabase()
 }

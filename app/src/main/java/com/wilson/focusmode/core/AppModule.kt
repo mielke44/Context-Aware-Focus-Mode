@@ -1,7 +1,6 @@
 package com.wilson.focusmode.core
 
 import android.content.Intent
-import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.wilson.focusmode.core.api.RESTApi
 import com.wilson.focusmode.core.database.AppDatabase
@@ -55,7 +54,7 @@ val appModule = module {
     single { get<AppDatabase>().focusSessionDao() }
 
     factory { NetworkManager(get()) }
-    single { FocusRepository(get()) }
+    single { FocusRepository(get(), get()) }
     single { NotificationUtil(get()) }
 
     factory<DistractionSensor<Float>>(named("accelerometer")) { AccelerometerSensor(get()) }
@@ -74,14 +73,14 @@ val appModule = module {
                 val intent = Intent(context, FocusForegroundService::class.java).apply {
                     action = FocusForegroundService.ACTION_START
                 }
-                ContextCompat.startForegroundService(context, intent)
+                context.startForegroundService(intent)
             }
 
             override fun stopService() {
                 val intent = Intent(context, FocusForegroundService::class.java).apply {
                     action = FocusForegroundService.ACTION_STOP
                 }
-                context.stopService(intent)
+                context.startService(intent)
             }
         }
     }

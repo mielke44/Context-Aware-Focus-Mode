@@ -16,7 +16,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.wilson.focusmode.R
 
 @Composable
 fun ActionButton(
@@ -29,7 +31,7 @@ fun ActionButton(
             onClick = onStop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(60.dp),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = MaterialTheme.colorScheme.error
@@ -37,7 +39,7 @@ fun ActionButton(
         ) {
             Icon(Icons.Default.Stop, contentDescription = null)
             Spacer(Modifier.width(8.dp))
-            Text("Stop Session")
+            Text(stringResource(R.string.stop_session_label))
         }
     } else {
         Button(
@@ -52,7 +54,7 @@ fun ActionButton(
         ) {
             Icon(Icons.Default.PlayArrow, contentDescription = null)
             Spacer(Modifier.width(8.dp))
-            Text("Start Session")
+            Text(stringResource(R.string.start_session_label))
         }
     }
 }

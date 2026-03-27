@@ -2,12 +2,16 @@ package com.wilson.focusmode.core
 
 import com.wilson.focusmode.core.database.FocusSessionDao
 import com.wilson.focusmode.core.models.FocusSessionEntity
+import com.wilson.focusmode.core.models.SessionDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class FocusRepository(private val dao: FocusSessionDao) {
+class FocusRepository(
+    private val dao: FocusSessionDao,
+    private val networkManager: NetworkManager
+) {
     private val _activeSessionState = MutableStateFlow(ActiveSessionData())
     val activeSessionState = _activeSessionState.asStateFlow()
 
@@ -21,9 +25,23 @@ class FocusRepository(private val dao: FocusSessionDao) {
         _activeSessionState.value = ActiveSessionData()
     }
 
+    suspend fun syncSessionApi(focusSession: FocusSessionEntity): Flow<Result<SessionDTO>>{
+        return networkManager.syncSession(entity = focusSession)
+    }
+
+    suspend fun fetchHistoryApi(): Flow<Result<List<SessionDTO>>>{
+        return networkManager.fetchHistory()
+    }
+
+    suspend fun getSessionById(id: String): Flow<Result<SessionDTO>>{
+        return networkManager.getSession(id)
+    }
+
     suspend fun saveSession(entity: FocusSessionEntity) = dao.insertSession(entity)
 
     fun getSessionHistory(): Flow<List<FocusSessionEntity>> = dao.getAllSessions()
+
+    suspend fun flushDataBase() = dao.flushDatabase()
 }
 
 data class ActiveSessionData(

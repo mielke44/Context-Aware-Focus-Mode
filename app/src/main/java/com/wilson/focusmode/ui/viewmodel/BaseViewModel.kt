@@ -2,25 +2,16 @@ package com.wilson.focusmode.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wilson.focusmode.R
 import com.wilson.focusmode.core.FocusRepository
-import com.wilson.focusmode.core.interfaces.DistractionSensor
 import com.wilson.focusmode.core.interfaces.FocusServiceController
-import com.wilson.focusmode.core.interfaces.FocusTimer
-import com.wilson.focusmode.core.models.DistractionType
 import com.wilson.focusmode.core.models.FocusSessionEntity
 import com.wilson.focusmode.core.models.FocusUiState
-import com.wilson.focusmode.core.utils.NotificationUtil
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BaseViewModel(
@@ -53,6 +44,11 @@ class BaseViewModel(
 
     fun onStopClicked() {
         serviceController.stopService()
-        repository.resetActiveSession()
+    }
+
+    fun onClearHistoryClicked(){
+        CoroutineScope(Dispatchers.IO).launch{
+            repository.flushDataBase()
+        }
     }
 }

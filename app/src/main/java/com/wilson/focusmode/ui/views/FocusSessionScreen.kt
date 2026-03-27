@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.AutoStories
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,9 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.wilson.focusmode.R
 import com.wilson.focusmode.core.models.FocusUiState
 import com.wilson.focusmode.core.models.formatTime
 import com.wilson.focusmode.ui.components.ActionButton
@@ -50,7 +52,7 @@ fun FocusSessionScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(24.dp),
+                    .padding(horizontal = 24.dp, vertical = 80.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -59,7 +61,7 @@ fun FocusSessionScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Focus Session",
+                        text = stringResource(R.string.focus_session_label),
                         style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                         color = Color.White
                     )
@@ -69,8 +71,8 @@ fun FocusSessionScreen(
                         modifier = Modifier
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Insights,
-                            contentDescription = "Ver histórico de sessões",
+                            imageVector = Icons.Default.AutoStories,
+                            contentDescription = stringResource(R.string.session_history_label),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -91,7 +93,7 @@ fun FocusSessionScreen(
                     )
 
                     Text(
-                        text = "Decorrido",
+                        text = stringResource(R.string.ellapsed_label),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.secondary
                     )

@@ -17,8 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.wilson.focusmode.R
 import com.wilson.focusmode.core.models.FocusSessionEntity
 import com.wilson.focusmode.core.models.formatTime
 import com.wilson.focusmode.core.utils.toReadableDate
@@ -63,13 +65,13 @@ fun SessionHistoryCard(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DistractionStat(
-                    label = "Sound",
+                    label = stringResource(R.string.sound_label),
                     value = session.soundDistractions,
                     icon = Icons.Default.Mic,
                     accentColor = accentColor
                 )
                 DistractionStat(
-                    label = "Movement",
+                    label = stringResource(R.string.movement_label),
                     value = session.movementDistractions,
                     icon = Icons.Default.ScreenRotation,
                     accentColor = accentColor

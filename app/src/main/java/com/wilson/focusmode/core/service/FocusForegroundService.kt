@@ -39,7 +39,7 @@ class FocusForegroundService : Service(), KoinComponent {
     private var sounds = 0
     private var movements = 0
 
-    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private var serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
@@ -55,6 +55,10 @@ class FocusForegroundService : Service(), KoinComponent {
             body = applicationContext.getString(R.string.notif_ongoing_body),
             icon = R.drawable.ic_launcher_foreground
         )
+
+        if (!serviceScope.isActive) {
+            serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        }
 
         startForeground(NotificationUtil.ONGOING_NOTIFICATION_ID, notification)
         serviceScope.launch {
@@ -77,26 +81,32 @@ class FocusForegroundService : Service(), KoinComponent {
         when {
             mic > NOISE_THRESHOLD -> {
                 handleDistraction(applicationContext.getString(R.string.notif_movement_distraction))
-                sounds = sounds++
+                sounds += 1
                 lastAlertTime = currentTime
                 repository.updateActiveSession(duration, sounds, movements)
             }
             accel > MOVEMENT_THRESHOLD -> {
                 handleDistraction(applicationContext.getString(R.string.notif_sound_distraction))
                 lastAlertTime = currentTime
-                movements = movements++
+                movements += 1
                 repository.updateActiveSession(duration, sounds, movements)
             }
         }
     }
 
     private fun stopFocusService() {
-        serviceScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (serviceScope.isActive) {
+                serviceScope.cancel()
+            }
+            duration = 0L
+            sounds = 0
+            movements = 0
             accelSensor.stopListening()
             micSensor.stopListening()
 
             val finalData = repository.activeSessionState.value
-            if (finalData.durationMillis > 0) {
+            if (finalData.durationMillis > 0.01) {
                 val sessionEntity = FocusSessionEntity(
                     startTimestamp = System.currentTimeMillis() - finalData.durationMillis,
                     durationMillis = finalData.durationMillis,
@@ -105,8 +115,8 @@ class FocusForegroundService : Service(), KoinComponent {
                 )
                 repository.saveSession(sessionEntity)
             }
+            repository.resetActiveSession()
             withContext(Dispatchers.Main) {
-                repository.resetActiveSession()
                 stopForeground(STOP_FOREGROUND_REMOVE)
                 stopSelf()
             }

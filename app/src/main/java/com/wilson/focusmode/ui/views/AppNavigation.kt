@@ -1,6 +1,8 @@
 package com.wilson.focusmode.ui.views
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,11 +18,12 @@ fun AppNavigation(navController: NavHostController = rememberNavController()){
 
     val baseViewModel: BaseViewModel = koinViewModel()
     val notificationUtil: NotificationUtil = get()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     NavHost(navController = navController, startDestination = Screen.Permissions) {
-
         composable(Screen.Permissions) {
             FocusPermissionGateway(
+                snackbarHostState = snackbarHostState,
                 onPermissionsGranted = {
                     notificationUtil.createFocusChannel()
                     navController.navigate(Screen.FocusSession) {
@@ -32,7 +35,6 @@ fun AppNavigation(navController: NavHostController = rememberNavController()){
 
         composable(Screen.FocusSession) {
             val uiState = baseViewModel.uiState.collectAsStateWithLifecycle().value
-
             FocusSessionScreen(
                 uiState = uiState,
                 onStartSession = { baseViewModel.onStartClicked() },
@@ -44,6 +46,9 @@ fun AppNavigation(navController: NavHostController = rememberNavController()){
         composable(Screen.Stats) {
             SessionStatsScreen(
                 onBack = { navController.popBackStack() },
+                onClearHistory = {
+                    baseViewModel.onClearHistoryClicked()
+                                 },
                 viewModel = baseViewModel,
             )
         }
